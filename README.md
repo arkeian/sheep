@@ -1,6 +1,7 @@
-# Sheep
+# Sheep: Simple Diffie-Hellman and ElGamal Encryption and Decryption Program 🐑
 
-**Sheep** is a small educational implementation of ElGamal encryption and decryption with Diffie-Hellman-style key generation. It demonstrates the underlying operations manually—including modular arithmetic, primality testing, and plaintext chunking—in equivalent Java and Python versions without cryptographic frameworks.
+
+**Sheep** is a simple program  implementation of ElGamal encryption and decryption with Diffie-Hellman key generation. It demonstrates the underlying operations manually without built-in frameworks, including modular arithmetic, primality testing, and plaintext chunking in both Java and Python.
 
 ## Quick Start
 
