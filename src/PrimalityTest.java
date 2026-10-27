@@ -59,7 +59,7 @@ public class PrimalityTest {
         BigInteger base = RandomNumberGenerator.generateUniformRandomInteger(n.subtract(BigInteger.valueOf(3)), random).add(BigInteger.TWO);
 
         // 2. Menghitung hasil awal base^d mod n.
-        BigInteger x = ModularArithmetic.exponentiation(base, d, n);
+        BigInteger x = ModularArithmetic.modularExponentiation(base, d, n);
 
         // 3. Memeriksa hasil 1 atau n-1, jika iya maka putaran lolos.
         if (x.equals(BigInteger.ONE) || x.equals(n.subtract(BigInteger.ONE))) {

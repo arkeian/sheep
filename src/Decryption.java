@@ -1,6 +1,25 @@
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 
 public class Decryption {
+    public static String decodeUtf8(byte[] bytes) {
+        // Membaca deretan byte sebagai teks UTF-8.
+        // REPORT membuat urutan byte yang tidak dapat dibaca dilaporkan sebagai kesalahan.
+        // ByteBuffer.wrap menyediakan byte pesan dalam bentuk yang diterima oleh decoder.
+        try {
+            return StandardCharsets.UTF_8.newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(ByteBuffer.wrap(bytes))
+                    .toString();
+        } catch (CharacterCodingException exception) {
+            throw new IllegalArgumentException("[Decryption.decodeUtf8.INVALID_UTF8] File input harus berisi teks UTF-8 yang valid.", exception);
+        }
+    }
+
     public static byte[] createPlaintextBytes(BigInteger[] plaintextChunks, int chunkSize, int plaintextByteLength) {
         // Menyusun bilangan hasil dekripsi menjadi deretan byte pesan semula.
         // BigInteger menyimpan nilai bilangan, sehingga byte nol di awal chunk tidak ikut dipertahankan.
