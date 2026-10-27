@@ -2,9 +2,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class RandomNumberGenerator {
-    // Membangkitkan bilangan acak yang sulit ditebak menggunakan SecureRandom.
-    private static final SecureRandom random = new SecureRandom();
-
     public static BigInteger generateUniformRandomInteger(BigInteger upperExclusive, SecureRandom random) {
         // Menghasilkan satu bilangan bulat acak dari interval 0 sampai sebelum upperExclusive.
         // Upper exclusive menunjukkan batas atas interval tidak termasuk hasil yang boleh dipilih.
@@ -18,10 +15,10 @@ public class RandomNumberGenerator {
         // memiliki peluang yang sama.
         // Pada contoh di atas terdapat 10 angka, sehingga peluang setiap angka adalah 1/10.
 
-        // Pada upperExclusive = 10, diperlukan bit sebanyak 4 (1010), namun 4 bit bisa merepresentasikan angka
-        // dari 0 sampai 15, sehingga perlu ditetapkan batas agar angka 10 sampai 15 tidak terpilih.
-        // Jika kita menggunakan modulo untuk mereduksi angkanya, maka akan cenderung bias dan distribusi angka
-        // menjadi tidak merata.
+        // Pada upperExclusive = 10, bentuk binernya adalah 1010, yang terdiri dari 4 bit. Namun, 4 bit
+        // bisa merepresentasikan angka dari 0 sampai 15, sehingga angka 10 sampai 15 perlu dikeluarkan.
+        // Jika angka 0 sampai 15 direduksi modulo 10, peluang hasilnya menjadi tidak sama,
+        // sehingga distribusi angka menjadi tidak merata.
 
         // Contoh:
         // Angka 0 bisa didapatkan dari:
@@ -30,7 +27,7 @@ public class RandomNumberGenerator {
         // Sehingga, peluangnya 2/16.
         // Angka 6 bisa didapatkan dari:
         //  a. 6 mod 10
-        //  Sehingga, peluangnya 1/16.
+        // Sehingga, peluangnya 1/16.
 
         // Maka dari itu, untuk menghindarinya, kandidat 10 sampai 15 ditolak dan diacak ulang (nama resminya adalah
         // Rejection Sampling), sehingga peluang setiap hasil 0 sampai 9 adalah 1/10.
@@ -47,11 +44,11 @@ public class RandomNumberGenerator {
 
         // 3. Mengulang pengambilan kandidat sampai ditemukan angka dalam interval yang diminta.
         while (true) {
-            // 4. Menggunakan jumlah posisi biner untuk membentuk kandidat.
+            // 4. Menggunakan jumlah posisi biner untuk membentuk kandidat bernilai 0 sampai (2^bits - 1).
             BigInteger value = new BigInteger(bits, random);
 
             // 5. Menerima kandidat jika nilainya lebih kecil dari upperExclusive.
-            // Batas bawah tidak perlu diperiksa karena langkah 4 dimulai dari biner awal 0 (0000),
+            // Batas bawah tidak perlu diperiksa karena kandidat pada langkah 4 dimulai dari 0,
             // sehingga setiap kandidat sudah memenuhi syarat value >= 0.
             if (value.compareTo(upperExclusive) < 0) {
                 return value;
@@ -59,3 +56,4 @@ public class RandomNumberGenerator {
         }
     }
 }
+
