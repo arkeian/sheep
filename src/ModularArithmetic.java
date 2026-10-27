@@ -78,7 +78,7 @@ public class ModularArithmetic {
 
         // 2. Memastikan eksponen tidak bernilai negatif:
         if (exponent.signum() < 0) {
-            throw new IllegalArgumentException("[ModularArithmetic.exponentiation.INVALID_EXPONENT] Eksponen tidak boleh bernilai negatif. (Nilai diterima: " + exponent + ")");
+            throw new IllegalArgumentException("[ModularArithmetic.exponentiation.INVALID_EXPONENT] Eksponen harus bernilai non-negatif. (Nilai diterima: " + exponent + ")");
         }
 
         // 3. Inisiasi awal result dengan nilai 1, karena 1 merupakan properti perkalian, yakni:
