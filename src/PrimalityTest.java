@@ -94,7 +94,7 @@ public class PrimalityTest {
 
         // 1. Memastikan jumlah putaran pengujian bernilai positif.
         if (rounds < 1) {
-            throw new IllegalArgumentException("Rounds must be more than or equal to 1");
+            throw new IllegalArgumentException("[PrimalityTest.isPrime.INVALID_ROUNDS] Rounds harus bernilai positif. (Nilai diterima: " + rounds + ")");
         }
 
         // 2. Jika kandidat bernilai kurang dari 2, maka bukan prima.
@@ -144,5 +144,39 @@ public class PrimalityTest {
 
         BigInteger q = p.subtract(BigInteger.ONE).divide(BigInteger.TWO);
         return isPrime(q, rounds);
+    }
+
+    public static BigInteger generatePrime(int bitLength, int rounds) {
+        // Mencari bilangan prima ganjil dengan panjang biner sebanyak bitLength.
+        // Kandidat acak diuji dengan Miller-Rabin. Jika terbukti komposit, kandidat baru dibangkitkan.
+
+        // Ukuran bilangan dalam kriptografi biasanya dinyatakan dalam bit, yaitu jumlah digit pada bentuk binernya.
+        // Setiap bit bernilai 0 atau 1. Kandidat dibentuk dari sejumlah bit acak sesuai bitLength.
+        // Melalui pengaturan bit, kita dapat memastikan panjang kandidat sesuai yang diminta dan nilainya ganjil.
+
+        // 1. Memastikan panjang biner minimal 2 bit, karena bilangan satu bit hanya 0 dan 1, yang bukan prima.
+        if (bitLength < 2) {
+            throw new IllegalArgumentException("[PrimalityTest.generatePrime.INVALID_BITLENGTH] bitLength harus bernilai lebih dari 2. (Nilai diterima: " + bitLength + ")");
+        }
+
+        // 2. Memastikan jumlah putaran pengujian bernilai positif.
+        if (rounds < 1) {
+            throw new IllegalArgumentException("[PrimalityTest.isPrime.INVALID_ROUNDS] Rounds harus bernilai positif. (Nilai diterima: " + rounds + ")");
+        }
+
+        // 3. Mengulang pencarian sampai ditemukan kandidat yang lolos pengujian.
+        while (true) {
+            // 4. Membangkitkan kandidat secara acak.
+            // setBit(bitLength - 1) menetapkan bit paling kiri menjadi 1 agar panjang kandidat tepat bitLength bit.
+            // Dengan demikian, rentangnya adalah 2^(bitLength - 1) <= candidate < 2^bitLength.
+            // setBit(0) menetapkan bit paling kanan menjadi 1 agar kandidat ganjil.
+            // Kandidat genap tidak dipilih karena bilangan prima genap hanyalah angka 2.
+            BigInteger candidate = new BigInteger(bitLength, random).setBit(bitLength - 1).setBit(0);
+
+            // 5. Mengembalikan kandidat yang lolos seluruh putaran Miller-Rabin sebagai probable prime.
+            if (isPrime(candidate, rounds)) {
+                return candidate;
+            }
+        }
     }
 }
